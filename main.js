@@ -19,9 +19,13 @@ io.on('connection', (socket) => {
   });
   socket.emit('message', 'welcome');
 
-    // Custom event 'getdata' listener
-    socket.on('getdata', () => {
-        // Sending 'Hello, World!' message to the client
-        socket.emit('message', 'Hello, World!');
+    socket.on('SetRecordState', (msg, callback) => {
+        console.log('Setting Recording State:', msg);
+        // Check if 'msg' is true
+        if (msg === true) {
+            callback('Server is recording!');
+        } else {
+            callback('Server is not recording!');
+        }
     });
 });
