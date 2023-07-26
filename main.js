@@ -26,12 +26,12 @@ io.on('connection', (socket) => {
   socket.on('SetRecordState', (msg, callback) => {
     console.log('Setting Recording State:', msg);
     // Check if 'msg' is true
-    if (msg === true) {
-      socket.emit('message', 'recording');
-      callback('Server is recording!');
+    if (msg) {
+      socket.emit('message', 'record');
+      // callback('Server is recording!');
     } else {
-      socket.emit('messsage', 'done recording');
-      callback('Server is not recording!');
+      socket.emit('message', 'stop');
+      // callback('Server is not recording!');
     }
   });
 });
