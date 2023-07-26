@@ -9,7 +9,11 @@ const server = app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
 });
 
-const io = socket(server);
+const io = socket(server, {
+  cors: {
+    origin: '*',
+  },
+});
 
 io.on('connection', (socket) => {
   console.log('new connection:', socket.id);
@@ -19,13 +23,13 @@ io.on('connection', (socket) => {
   });
   socket.emit('message', 'welcome');
 
-    socket.on('SetRecordState', (msg, callback) => {
-        console.log('Setting Recording State:', msg);
-        // Check if 'msg' is true
-        if (msg === true) {
-            callback('Server is recording!');
-        } else {
-            callback('Server is not recording!');
-        }
-    });
+  socket.on('SetRecordState', (msg, callback) => {
+    console.log('Setting Recording State:', msg);
+    // Check if 'msg' is true
+    if (msg === true) {
+      callback('Server is recording!');
+    } else {
+      callback('Server is not recording!');
+    }
+  });
 });
