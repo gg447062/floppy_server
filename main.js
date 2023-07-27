@@ -16,7 +16,10 @@ const io = socket(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log('new connection:', socket.id);
+  const ip =
+    socket.handshake.headers['x-forwarded-for'] ||
+    socket.conn.remoteAddress.split(':')[3];
+  console.log('new connection:', socket.id, ip);
 
   socket.on('disconnect', (reason) => {
     console.log('socket disconnected:', reason);
