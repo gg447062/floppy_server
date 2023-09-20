@@ -31,10 +31,10 @@ io.on('connection', (socket) => {
     // Check if 'msg' is true
     if (msg) {
       socket.emit('message', 'record');
-      // callback('Server is recording!');
+      callback('Server is recording!');
     } else {
       socket.emit('message', 'stop');
-      // callback('Server is not recording!');
+      callback('Server is not recording!');
     }
   });
 });
