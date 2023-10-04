@@ -12,23 +12,23 @@ const server = app.listen(PORT, () => {
 
 const wss = new WebSocketServer({ server });
 
-const clients = {};
+// const clients = {};
 // const rooms = {}
 
 wss.on('connection', (ws, req) => {
   const ip =
     req.headers['x-forwarded-for'] || req.socket.remoteAddress.split(':')[3];
-  const id = crypto.randomUUID();
+  // const id = crypto.randomUUID();
 
-  clients[id] = { id, ip };
+  // clients[id] = { id, ip };
 
-  console.log('new connection:', id, 'at ', ip);
-  console.log(clients);
+  console.log('new connection at: ', ip);
+  // console.log(clients);
 
   ws.on('close', () => {
-    console.log('connection closed: ', id);
-    delete clients[id];
-    console.log(clients);
+    console.log('connection closed: ', ip);
+    // delete clients[id];
+    // console.log(clients);
   });
 
   ws.on('error', console.error);
