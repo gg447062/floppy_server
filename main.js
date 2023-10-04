@@ -12,45 +12,29 @@ const server = app.listen(PORT, () => {
 
 const wss = new WebSocketServer({ server });
 
+const clients = {};
+// const rooms = {}
+
 wss.on('connection', (ws, req) => {
   const ip =
     req.headers['x-forwarded-for'] || req.socket.remoteAddress.split(':')[3];
+  const id = crypto.randomUUID();
 
-  console.log('new connection:', ip);
+  clients[id] = { id, ip };
+
+  console.log('new connection:', id, 'at ', ip);
+  console.log(clients);
+
+  ws.on('close', () => {
+    console.log('connection closed: ', id);
+    delete clients[id];
+    console.log(clients);
+  });
+
   ws.on('error', console.error);
   ws.on('message', (data) => {
-    const { room, message } = JSON.parse(data);
-    console.log(`recieved ${message} for room ${room}`);
+    const [name, val] = data.toString().split('::');
+    console.log(name, val);
   });
   ws.send('welcome');
 });
-
-// const io = socket(server, {
-//   cors: {
-//     origin: '*',
-//   },
-// });
-
-// io.on('connection', (socket) => {
-//   const ip =
-//     socket.handshake.headers['x-forwarded-for'] ||
-//     socket.conn.remoteAddress.split(':')[3];
-//   console.log('new connection:', socket.id, ip);
-
-//   socket.on('disconnect', (reason) => {
-//     console.log('socket disconnected:', reason);
-//   });
-//   socket.emit('message', 'welcome');
-
-//   socket.on('SetRecordState', (msg, callback) => {
-//     console.log('Setting Recording State:', msg);
-
-//     if (msg) {
-//       socket.emit('message', 'record');
-//       callback('Server is recording!');
-//     } else {
-//       socket.emit('message', 'stop');
-//       callback('Server is not recording!');
-//     }
-//   });
-// });
